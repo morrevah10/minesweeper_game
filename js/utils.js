@@ -1,5 +1,6 @@
 'use strict'
-
+var gStartTime
+var gIntervalId
 
 function countNeighbors(gBoard, cellI, cellJ) {
     var count = 0;
@@ -25,3 +26,21 @@ function renderCell(location, value) {
   var elCell = document.querySelector(`.cell-${location.i}-${location.j}`);
   elCell.innerHTML = value;
 }
+
+
+
+function startTimer() {
+  gStartTime = Date.now()
+  gIntervalId = setInterval(updateTime, 80)
+}
+
+
+function updateTime() {
+  var now = Date.now()
+  var diff = now - gStartTime
+  gGame.secsPassed = diff /1000
+  var elTimerSpan = document.querySelector('.timer span')
+  elTimerSpan.innerText = gGame.secsPassed
+
+}
+

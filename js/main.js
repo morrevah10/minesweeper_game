@@ -25,6 +25,7 @@ var gLivesNum =3;
 function initGame() {
   chooseDifficulty(gLevel.SIZE, gLevel.MINES);
   livesCounter()
+  clearInterval(gIntervalId)
 }
 
 function chooseDifficulty(size, numOfMines) {
@@ -76,18 +77,15 @@ function setMinesAroundCount(gBoard) {
 }
 
 function cellClicked(elCell, i, j) {
+  
   // console.log(gGame.shownCount);
   if (gGame.shownCount === 0) {
     randomMine(gLevel);
     setMinesAroundCount(gBoard);
+    startTimer()
   } //first not a mine
 
-  if(gLivesNum===0) {
-    gGame.isOn=false
-    var elEndGame = document.querySelector(".resat");
-    elEndGame.innerHTML = `<button onclick="startGame()">🤯</button>`;
-  }
-
+  
 
   if(gGame.isOn){
   var cell = gBoard[i][j];
@@ -104,6 +102,11 @@ function cellClicked(elCell, i, j) {
     elclickedMine.innerHTML = `<button onclick="startGame()">😫</button>`;
     gLivesNum--
     livesCounter()
+    if(gLivesNum<1) {
+      gGame.isOn=false
+      var elEndGame = document.querySelector(".resat");
+      elEndGame.innerHTML = `<button onclick="startGame()">🤯</button>`;
+    }
     //gGame.isOn=false
   }
   //console.log(cell.minesAroundCount);
@@ -129,6 +132,7 @@ function randomMine(gLevel) {
 function startGame() {
   gBoard = buildBoard();
   renderBoard(gBoard);
+  clearInterval(gIntervalId)
   // randomMine(gLevel);
   // setMinesAroundCount(gBoard);
   gGame = {
@@ -143,6 +147,7 @@ function startGame() {
   var elStartGame = document.querySelector(".resat");
   elStartGame.innerHTML = `<button onclick="startGame()">😀</button>`;
   livesCounter()
+  
 }
 
 function cellMarked(elCell, indexI, indexJ) {
@@ -210,6 +215,8 @@ function checkGameOver(gBoard) {
 function gameOver() {
   gGame.isOn = false;
   gLivesNum =3
+  clearInterval(gIntervalId)
+  
 }
 
 
